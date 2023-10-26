@@ -20,6 +20,7 @@ var lose = document.querySelector(".lose");
 var timerElement = document.querySelector(".timer-count");
 var startButton = document.querySelector(".start-button");
 
+let answerResult = document.getElementById("result")
 
 let btn1 = document.getElementById("answer1");
 let btn2 = document.getElementById("answer2");
@@ -33,8 +34,13 @@ var winCounter = 0;
 var loseCounter = 0;
 var isWin = false;
 var timer;
-var timerCount;
 
+
+let quickTimer;
+let quickTimerCtr = 10;
+
+let timerCount = 100;
+let correctCtr = 0;
 let quesCtr = 0;
 let correct;
 
@@ -46,17 +52,17 @@ let quizQuestions = [
     answer2: "B.) stinky",
     answer3: "C.) Donkey Kong",
     answer4: "D.) Funky Monkey Friday",
-    correctAnswer: "Donkey Kong"
+    correctAnswer: "D"
   },
 
   {
-    question: "aaaaaaaaaaaaaaaaaaa",
+    question: "funny monkey is",
     questionNum: 2,
-    answer1: "sssssssssssss",
-    answer2: "ssssssssssssss",
-    answer3: "sssssssssssssssss",
-    answer4: "ssssssssssssssss",
-    correctAnswer: ""
+    answer1: "A.) poopy",
+    answer2: "B.) stinky",
+    answer3: "C.) Donkey Kong",
+    answer4: "D.) Funky Monkey Friday",
+    correctAnswer: "D"
   },
 
   {
@@ -66,17 +72,26 @@ let quizQuestions = [
     answer2: "B.) stinky",
     answer3: "C.) Donkey Kong",
     answer4: "D.) Funky Monkey Friday",
-    correctAnswer: "Donkey Kong"
+    correctAnswer: "D"
   },
 
   {
-    question: "aaaaaaaaaaaaaaaaaaa",
+    question: "funny monkey is",
     questionNum: 4,
-    answer1: "sssssssssssss",
-    answer2: "ssssssssssssss",
-    answer3: "sssssssssssssssss",
-    answer4: "ssssssssssssssss",
-    correctAnswer: ""
+    answer1: "A.) poopy",
+    answer2: "B.) stinky",
+    answer3: "C.) Donkey Kong",
+    answer4: "D.) Funky Monkey Friday",
+    correctAnswer: "D"
+  },
+  {
+    question: "funny monkey is",
+    questionNum: 5,
+    answer1: "A.) poopy",
+    answer2: "B.) stinky",
+    answer3: "C.) Donkey Kong",
+    answer4: "D.) Funky Monkey Friday",
+    correctAnswer: "D"
   },
 
   {
@@ -86,102 +101,76 @@ let quizQuestions = [
     answer2: "B.) stinky",
     answer3: "C.) Donkey Kong",
     answer4: "D.) Funky Monkey Friday",
-    correctAnswer: "Donkey Kong"
+    correctAnswer: "D"
   },
-
-  {
-    question: "aaaaaaaaaaaaaaaaaaa",
-    questionNum: 6,
-    answer1: "sssssssssssss",
-    answer2: "ssssssssssssss",
-    answer3: "sssssssssssssssss",
-    answer4: "ssssssssssssssss",
-    correctAnswer: ""
-  }
 ]
 
 
 // The init function is called when the page loads 
 function init() {
-  getWins();
-  getlosses();
+  // getWins();
+  // getlosses();
 }
 
 // The startGame function is called when the start button is clicked
 function startGame() {
   isWin = false;
-  timerCount = 10;
   // Prevents start button from being clicked when round is in progress
   startButton.disabled = true;
 
   // once start button is pressed, startgame is called and game begins, 
   // questions are rendered on screen
-  show();
+  showQuiz();
   renderMessage();
   startTimer()
+
 }
 
-// The winGame function is called when the win condition is met
-function winGame() {
-  wordBlank.textContent = "YOU WON!!!🏆 ";
-  winCounter++
-  startButton.disabled = false;
-  setWins()
-}
-
-// The loseGame function is called when timer reaches 0
-function loseGame() {
-  wordBlank.textContent = "GAME OVER";
-  loseCounter++
-  startButton.disabled = false;
-  setLosses()
-}
-
-// The setTimer function starts and stops the timer and triggers winGame() and loseGame()
+// The setTimer function starts and stops the timer 
+// This timer is displayed to the user when start button is pressed
 function startTimer() {
   // Sets timer
   timer = setInterval(function () {
     timerCount--;
     timerElement.textContent = timerCount;
+
+    // Tests if time has run out
+    if (timerCount <= 0) {
+      // Clears interval
+      clearInterval(timer);
+    }
+
   }, 1000);
 }
 
 
-// Updates win count on screen and sets win count to client storage
-function setWins() {
-  win.textContent = winCounter;
-  localStorage.setItem("winCount", winCounter);
+// This timer will be used to adjust how long 
+// I want the result message to be displayed
+function fastTimer()
+{
+  quickTimer = setInterval(function () {
+    quickTimerCtr--;    
+
+    // if quickTimerCtr is greater than 10 then show result
+    showResult();
+
+
+    //  if quickTimer is less than or equal to 0 then hid the result 
+    if (quickTimerCtr <= 0) 
+    {
+      // Clears interval
+      hideResult();
+      clearInterval(quickTimer);
+    }
+
+    // set in Nanoseconds
+  }, 100);
 }
 
-// Updates lose count on screen and sets lose count to client storage
-function setLosses() {
-  lose.textContent = loseCounter;
-  localStorage.setItem("loseCount", loseCounter);
-}
-
-// These functions are used by init
-function getWins() {
-  // Get stored value from client storage, if it exists
-  var storedWins = localStorage.getItem("winCount");
-  // If stored value doesn't exist, set counter to 0
-  if (storedWins === null) {
-    winCounter = 0;
-  } else {
-    // If a value is retrieved from client storage set the winCounter to that value
-    winCounter = storedWins;
-  }
-  //Render win count to page
-  win.textContent = winCounter;
-}
-
-function getlosses() {
-  var storedLosses = localStorage.getItem("loseCount");
-  if (storedLosses === null) {
-    loseCounter = 0;
-  } else {
-    loseCounter = storedLosses;
-  }
-  lose.textContent = loseCounter;
+function setCorrectCtr()
+{
+  correctCtr ++;
+  win.textContent = correctCtr;
 }
 
 function checkWin() {
@@ -225,22 +214,35 @@ function renderMessage() {
 
 // visible.style.display will inhereit the display characteristic from it's parent
 
-function show() {
-  document.getElementById("visible").style.display = "inherit";
+function showQuiz() {
+  document.getElementById("visibleQuiz").style.display = "inherit";
 }
 
 //  visible.style.display will hide everything within
 // <div class="card results" id="visible">
 
-function hide() {
-  document.getElementById("visible").style.display = "none";
+function hideQuiz() {
+  document.getElementById("visibleQuiz").style.display = "none";
+}
+
+function showResult() {
+  answerResult.style.display= "inherit";
+}
+
+
+function hideResult() {
+  answerResult.style.display= "none";
 }
 
 
 function nextQuestion() {
+  if(quesCtr = quizQuestions.length)
+    quizOver
 
   renderMessage();
 }
+
+
 
 function correctAnswer() {
   let quiz = quizQuestions[quesCtr];
@@ -248,16 +250,34 @@ function correctAnswer() {
   return correct;
 }
 
+
+function setRsltFail(){
+  answerResult.textContent = "Sorry, that was incorrect";
+}
+
+function setRsltSuccess(){
+  answerResult.textContent = "That is correct, Nice Job";
+}
+
+
 function checkAnswer(answer) {
   correct = quizQuestions[quesCtr].correctAnswer;
+  answer = answer[0];
 
+  console.log(answer);
   if (answer === correct) {
-    alert("That Is Correct!");
+    setCorrectCtr();
+    setRsltSuccess();
+    fastTimer();
+    quickTimerCtr = 10;
     nextQuestion();
   }
   else
   {
-    alert("That Is Incorrect.")
+    timerCount = timerCount -5;
+    setRsltFail();
+    fastTimer();
+    quickTimerCtr = 10;
     nextQuestion();
   }
   
@@ -270,14 +290,16 @@ startButton.addEventListener("click", startGame);
 
 // Calls init() so that it fires when page opened
 init();
-hide();
+hideQuiz();
 
-// when answering the question user will be brought to the next question in the quiz
+
+
+// these click events will call a function which grabs the text occupying the button pressed by user
+// checkAnswer is called and given the  text grabbed by element = event.target;
 btn1.addEventListener ("click", function(event) {
   var element = event.target;
   var text=  element.textContent;
 
-  console.log(text);
   checkAnswer(text);
 });
 
@@ -285,15 +307,14 @@ btn2.addEventListener ("click", function(event) {
   var element = event.target;
   var text=  element.textContent;
 
-  console.log(text);
   checkAnswer(text);
+
 });
 
 btn3.addEventListener ("click", function(event) {
   var element = event.target;
   var text=  element.textContent;
 
-  console.log(text);
   checkAnswer(text);
 });
 
@@ -301,7 +322,6 @@ btn4.addEventListener ("click", function(event) {
   var element = event.target;
   var text=  element.textContent;
 
-  console.log(text);
   checkAnswer(text);
 });
 
