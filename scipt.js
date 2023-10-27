@@ -20,8 +20,17 @@ var lose = document.querySelector(".lose");
 var timerElement = document.querySelector(".timer-count");
 var startButton = document.querySelector(".start-button");
 
-let answerResult = document.getElementById("result")
+let answerResult = document.getElementById("result");
+let displayQuiz = document.getElementById("displayQuiz");
+let displayHeader = document.getElementById("quizHeader");
+let quizComplete = document.getElementById("completed");
+let highscore = document.getElementById("highscore");
 
+let resetBtn = document.querySelector(".reset")
+let totalCrt = document.querySelector(".totalCrt");
+let quizLength = document.querySelector(".quizTotal");
+let intailsGrade = document.querySelector(".intials-grade");
+let saveButton = document.querySelector(".submit")
 let btn1 = document.getElementById("answer1");
 let btn2 = document.getElementById("answer2");
 let btn3 = document.getElementById("answer3");
@@ -94,17 +103,58 @@ let quizQuestions = [
     correctAnswer: "D"
   },
 
+
   {
     question: "funny monkey is",
-    questionNum: 5,
+    questionNum: 6,
     answer1: "A.) poopy",
     answer2: "B.) stinky",
     answer3: "C.) Donkey Kong",
     answer4: "D.) Funky Monkey Friday",
     correctAnswer: "D"
-  },
+  }
 ]
 
+
+function quizOver() {
+
+  hideQuizBody();
+  hideHeader();
+  totalCrt.textContent = correctCtr;
+  quizLength.textContent = quizQuestions.length;
+   saveLastGrade();
+
+}
+
+function hideHighscore()
+{
+  highscore.style.display = "none";
+}
+
+function showHighscore()
+{
+  highscore.style.display = "block";
+}
+
+function hideQuizComplete()
+{
+  quizComplete.style.display = "none";
+}
+
+function showQuizComplete() {
+    quizComplete.style.display = "block";
+
+}
+
+function hideQuizBody() {
+
+  displayQuiz.style.display = "none";
+
+}
+
+function hideHeader() {
+  displayHeader.style.display = "none";
+}
 
 // The init function is called when the page loads 
 function init() {
@@ -143,21 +193,18 @@ function startTimer() {
   }, 1000);
 }
 
-
 // This timer will be used to adjust how long 
 // I want the result message to be displayed
-function fastTimer()
-{
+function fastTimer() {
   quickTimer = setInterval(function () {
-    quickTimerCtr--;    
+    quickTimerCtr--;
 
     // if quickTimerCtr is greater than 10 then show result
     showResult();
 
 
     //  if quickTimer is less than or equal to 0 then hid the result 
-    if (quickTimerCtr <= 0) 
-    {
+    if (quickTimerCtr <= 0) {
       // Clears interval
       hideResult();
       clearInterval(quickTimer);
@@ -167,9 +214,8 @@ function fastTimer()
   }, 100);
 }
 
-function setCorrectCtr()
-{
-  correctCtr ++;
+function setCorrectCtr() {
+  correctCtr++;
   win.textContent = correctCtr;
 }
 
@@ -186,7 +232,6 @@ function setCounter() {
 }
 
 function renderMessage() {
-  // questionIndex will determine which question object to ask the user 
 
   // Grabs the a random quiz question object made on line 33
   var quiz = quizQuestions[quesCtr];
@@ -209,13 +254,12 @@ function renderMessage() {
     document.getElementById("answer3").textContent = quizAnswer3;
     document.getElementById("answer4").textContent = quizAnswer4;
   }
-  setCounter();
 }
 
 // visible.style.display will inhereit the display characteristic from it's parent
 
 function showQuiz() {
-  document.getElementById("visibleQuiz").style.display = "inherit";
+  document.getElementById("visibleQuiz").style.display = "block";
 }
 
 //  visible.style.display will hide everything within
@@ -226,22 +270,28 @@ function hideQuiz() {
 }
 
 function showResult() {
-  answerResult.style.display= "inherit";
+  answerResult.style.display = "inherit";
 }
 
 
 function hideResult() {
-  answerResult.style.display= "none";
+  answerResult.style.display = "none";
 }
 
 
 function nextQuestion() {
-  if(quesCtr = quizQuestions.length)
-    quizOver
+  setCounter();
 
-  renderMessage();
+  if (quesCtr == quizQuestions.length) 
+  {
+    quizOver();
+    showQuizComplete();
+  }
+
+  
+  else
+    renderMessage();
 }
-
 
 
 function correctAnswer() {
@@ -251,11 +301,11 @@ function correctAnswer() {
 }
 
 
-function setRsltFail(){
+function setRsltFail() {
   answerResult.textContent = "Sorry, that was incorrect";
 }
 
-function setRsltSuccess(){
+function setRsltSuccess() {
   answerResult.textContent = "That is correct, Nice Job";
 }
 
@@ -272,55 +322,98 @@ function checkAnswer(answer) {
     quickTimerCtr = 10;
     nextQuestion();
   }
-  else
-  {
-    timerCount = timerCount -5;
+  else {
+    timerCount = timerCount - 5;
     setRsltFail();
     fastTimer();
     quickTimerCtr = 10;
     nextQuestion();
   }
-  
+
 
 }
 
-// Attach event listener to start button to call startGame function on click
-startButton.addEventListener("click", startGame);
+function saveLastGrade() {
+  // Save related form data as an object
+  var grade = {
+    initials: intailsGrade.value,
+    grade: correctCtr,
+
+  };
+  // Use .setItem() to store object in storage and JSON.stringify to convert it as a string
+  localStorage.setItem('grade', JSON.stringify(grade));
+}
+
+function renderLastGrade() {
+  // Use JSON.parse() to convert text to JavaScript object
+  var lastGrade = JSON.parse(localStorage.getItem('grade'));
+  // Check if data is returned, if not exit out of the function
+  if (lastGrade !== null) {
+    document.getElementById('saved-name').innerHTML = lastGrade.initials;
+    document.getElementById('saved-grade').innerHTML = lastGrade.grade;
+  }
+  showHighscore();
+}
+
+function resetGame()
+{
+  location.reload();
+}
+
+
+
 
 
 // Calls init() so that it fires when page opened
 init();
 hideQuiz();
+hideQuizComplete();
+hideHighscore();
+
+// Attach event listener to start button to call startGame function on click
+startButton.addEventListener("click", startGame);
+
+// Attaches event listener to button
+resetBtn.addEventListener("click", resetGame);
+
+
+saveButton.addEventListener('click', function (event) {
+  event.preventDefault();
+  saveLastGrade();
+  hideQuizComplete();
+  renderLastGrade();
+});
+
 
 
 
 // these click events will call a function which grabs the text occupying the button pressed by user
 // checkAnswer is called and given the  text grabbed by element = event.target;
-btn1.addEventListener ("click", function(event) {
+btn1.addEventListener("click", function (event) {
   var element = event.target;
-  var text=  element.textContent;
+  var text = element.textContent;
 
   checkAnswer(text);
 });
 
-btn2.addEventListener ("click", function(event) {
+btn2.addEventListener("click", function (event) {
   var element = event.target;
-  var text=  element.textContent;
+  var text = element.textContent;
 
   checkAnswer(text);
 
 });
 
-btn3.addEventListener ("click", function(event) {
+btn3.addEventListener("click", function (event) {
   var element = event.target;
-  var text=  element.textContent;
+  var text = element.textContent;
 
   checkAnswer(text);
 });
 
-btn4.addEventListener ("click", function(event) {
+btn4.addEventListener("click", function (event) {
   var element = event.target;
-  var text=  element.textContent;
+  var text = element.textContent;
 
   checkAnswer(text);
 });

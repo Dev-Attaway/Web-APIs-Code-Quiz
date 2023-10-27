@@ -9,27 +9,48 @@
 </head>
 
 <body>
-    <header>
+    <header id="quizHeader">
         <div class="large-font">Javascript Quiz</div>
         <button class="start-button">Start</button>
     </header>
 
     <main>
+        <div class="card" id="completed">
+            <h3>Quiz Completed</h3>
+            <h4>Your final score is:
+                <span class="totalCrt">""</span> out of
+                <span class="quizTotal">""</span>
+                <br>
+                <br>
+                Please enter your intials
+                <br>
+                <input class="intials-grade" size="2"></input>
+                <button class="submit">Submit</button>
+            </h4>
+        </div>
 
+        <div class="card" id="highscore">
+            <h2>HIGHSCORE
+            <p>Player: <span id="saved-name"></span> - 
+            <span id="saved-grade"></span></p></h2>
+            <button class="reset">Play Again?</button>
+          </div>
 
-        <section>
+        <section id="displayQuiz">
             <div class="card results" id="visibleQuiz">
                 <div class="win-loss-container">
                     <div>
                         <h2>Correct: <span class="win">0</span> </h2>
                         <div class="column">
                             <h2>Question: <span class="count">1</span>
-                            <span class = "question">""</span></h2>
+                                <span class="question">""</span>
+                            </h2>
                             <button class="question-block" id="answer1"></button>
                             <button class="question-block" id="answer2"></button>
                             <button class="question-block" id="answer3"></button>
                             <button class="question-block" id="answer4"></button>
-                            <h3><span id="result"></span><h3>
+                            <h3><span id="result"></span>
+                                <h3>
 
                         </div>
 
