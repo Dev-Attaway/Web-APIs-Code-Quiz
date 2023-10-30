@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>CSS Box Styling</title>
+    <title>Nick's Cool JS Quiz</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" type="text/css" href="./style.css" />
@@ -18,8 +18,11 @@
         <div class="card" id="completed">
             <h3>Quiz Completed</h3>
             <h4>Your final score is:
+                <!-- these spans are empty becase we are loading them with data from 
+                script.js -->
                 <span class="totalCrt">""</span> out of
                 <span class="quizTotal">""</span>
+                <!-- br added to some web page is more aesthetic  -->
                 <br>
                 <br>
                 Please enter your intials
@@ -42,18 +45,16 @@
                     <div>
                         <h2>Correct: <span class="win">0</span> </h2>
                         <div class="column">
-                            <h2>Question: <span class="count">1</span>
-                                <span class="question">""</span>
+                            <h2>Question <span class="count">1</span>.)
+                                <br>
+                             <span class="question">""</span>
                             </h2>
                             <button class="question-block" id="answer1"></button>
                             <button class="question-block" id="answer2"></button>
                             <button class="question-block" id="answer3"></button>
                             <button class="question-block" id="answer4"></button>
-                            <h3><span id="result"></span>
-                                <h3>
-
+                            <h3><span id="result"></span></h3>
                         </div>
-
                     </div>
                 </div>
                 <div class="card timer">
