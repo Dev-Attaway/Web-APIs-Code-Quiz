@@ -1,4 +1,4 @@
-# jS Web Quiz
+# JS Web Quiz
 
 ## Description
 This project is intended to display that the Developer is comfortable with getting and manipulating HTML elements with JS.
