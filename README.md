@@ -1,16 +1,17 @@
-# js Web Quiz
+# jS Web Quiz
 
 ## Description
 This project is intended to display that the Developer is comfortable with getting and manipulating HTML elements with JS.
 this is also intended to show the user's understanding of timer functions and using the browser's local storage.
 
 # Completed Website page:
-![](./Assets/03-javascript-homework-demo.png)
+![](./assets/web-quiz.png)
+
 
 ## Installation
 
 Files are available for download through Git Hub:
-https://github.com/Dev-Attaway/password-generator
+https://github.com/Dev-Attaway/Web-APIs-Code-Quiz
 
 ## Usage
 
