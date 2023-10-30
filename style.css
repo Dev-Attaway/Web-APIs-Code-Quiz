@@ -1,3 +1,9 @@
+
+
+/* this style sheet was taken from MSU-VIRT-FSF-PT-09-2023-U-LOLC\04-Web-APIs\01-Activities\28-Stu_Mini-Project\Main\assets\css */
+/* The coloring was aesthetically pleasing  */
+/* Added a hover and active selectors so questions light up in different colors  */
+/* I hope that this enhances the user experince */
 * {
     box-sizing: border-box;
   }
@@ -117,8 +123,6 @@
     box-shadow: inset 0px 0px 15px rgb(20, 30, 172), 0 0 15px rgb(20, 30, 172);
 }
 
-  
-  
   .word-blanks {
     line-height: 360px;
   }

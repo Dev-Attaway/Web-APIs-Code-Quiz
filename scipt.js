@@ -1,5 +1,4 @@
 
-
 // Requirements
 // GIVEN I am taking a code quiz
 // WHEN I click the start button
@@ -13,12 +12,14 @@
 // WHEN the game is over
 // THEN I can save my initials and my score
 
-
-var wordBlank = document.querySelector(".word-blanks");
-var win = document.querySelector(".win");
-var lose = document.querySelector(".lose");
-var timerElement = document.querySelector(".timer-count");
-var startButton = document.querySelector(".start-button");
+let win = document.querySelector(".win");
+let timerElement = document.querySelector(".timer-count");
+let startButton = document.querySelector(".start-button");
+let resetBtn = document.querySelector(".reset")
+let totalCrt = document.querySelector(".totalCrt");
+let quizLength = document.querySelector(".quizTotal");
+let intailsGrade = document.querySelector(".intials-grade");
+let saveButton = document.querySelector(".submit");
 
 let answerResult = document.getElementById("result");
 let displayQuiz = document.getElementById("displayQuiz");
@@ -26,155 +27,80 @@ let displayHeader = document.getElementById("quizHeader");
 let quizComplete = document.getElementById("completed");
 let highscore = document.getElementById("highscore");
 
-let resetBtn = document.querySelector(".reset")
-let totalCrt = document.querySelector(".totalCrt");
-let quizLength = document.querySelector(".quizTotal");
-let intailsGrade = document.querySelector(".intials-grade");
-let saveButton = document.querySelector(".submit")
 let btn1 = document.getElementById("answer1");
 let btn2 = document.getElementById("answer2");
 let btn3 = document.getElementById("answer3");
 let btn4 = document.getElementById("answer4");
 
-
-var chosenWord = "";
-var numBlanks = 0;
-var winCounter = 0;
-var loseCounter = 0;
-var isWin = false;
-var timer;
-
-
+// Theses will be the timer
+let timer;
 let quickTimer;
-let quickTimerCtr = 10;
 
-let timerCount = 100;
+let quickTimerCtr = 12;
+let timerCount = 120;
+
 let correctCtr = 0;
 let quesCtr = 0;
 let correct;
 
+// An Array of objects: quizQuestions will contain the questions 
+// Follow the format of the objects to load more queztions 
 let quizQuestions = [
   {
-    question: "funny monkey is",
+    question: "Inside which HTML element do we put the JavaScript?",
     questionNum: 1,
-    answer1: "A.) poopy",
-    answer2: "B.) stinky",
-    answer3: "C.) Donkey Kong",
-    answer4: "D.) Funky Monkey Friday",
+    answer1: "A.) <javascript>",
+    answer2: "B.) <js>",
+    answer3: "C.) <src>",
+    answer4: "D.) <script>",
     correctAnswer: "D"
   },
-
   {
-    question: "funny monkey is",
+    question: "What is the type of variable data declare below const data=[ ]" ,
     questionNum: 2,
-    answer1: "A.) poopy",
-    answer2: "B.) stinky",
-    answer3: "C.) Donkey Kong",
-    answer4: "D.) Funky Monkey Friday",
-    correctAnswer: "D"
+    answer1: "A.) Array",
+    answer2: "B.) Object",
+    answer3: "C.) String",
+    answer4: "D.) none of these",
+    correctAnswer: "A"
   },
-
   {
-    question: "funny monkey is",
+    question: "Which of the following will write the message “Hello DataFlair!” in an alert box? ",
     questionNum: 3,
-    answer1: "A.) poopy",
-    answer2: "B.) stinky",
-    answer3: "C.) Donkey Kong",
-    answer4: "D.) Funky Monkey Friday",
+    answer1: "A.) alertBox(“Hello DataFlair!”);",
+    answer2: "B.) alert(Hello DataFlair!);",
+    answer3: "C.) msgAlert(“Hello DataFlair!”);",
+    answer4: "D.) alert(“Hello DataFlair!”);",
     correctAnswer: "D"
   },
-
   {
-    question: "funny monkey is",
+    question: "Which of the following methods is used to access HTML elements using Javascript?",
     questionNum: 4,
-    answer1: "A.) poopy",
-    answer2: "B.) stinky",
-    answer3: "C.) Donkey Kong",
-    answer4: "D.) Funky Monkey Friday",
-    correctAnswer: "D"
+    answer1: "A.) getElementById()",
+    answer2: "B.) getElementsByClassName()",
+    answer3: "C.) A & D",
+    answer4: "D.) None",
+    correctAnswer: "C"
   },
   {
-    question: "funny monkey is",
+    question: "Which built-in method adds one or more elements to the end of an array and returns the new length of the array?",
     questionNum: 5,
-    answer1: "A.) poopy",
-    answer2: "B.) stinky",
-    answer3: "C.) Donkey Kong",
-    answer4: "D.) Funky Monkey Friday",
-    correctAnswer: "D"
+    answer1: "A.) last()",
+    answer2: "B.) put()",
+    answer3: "C.) push()",
+    answer4: "D.) None",
+    correctAnswer: "C"
   },
-
-
   {
-    question: "funny monkey is",
+    question: "Which of the following function of String object returns the calling string value converted to lower case?",
     questionNum: 6,
-    answer1: "A.) poopy",
-    answer2: "B.) stinky",
-    answer3: "C.) Donkey Kong",
-    answer4: "D.) Funky Monkey Friday",
-    correctAnswer: "D"
+    answer1: "A.) toLocaleLowerCase()",
+    answer2: "B.) toLowerCase()",
+    answer3: "C.) toString()",
+    answer4: "D.) substring()",
+    correctAnswer: "B"
   }
 ]
-
-
-function quizOver() {
-
-  hideQuizBody();
-  hideHeader();
-  totalCrt.textContent = correctCtr;
-  quizLength.textContent = quizQuestions.length;
-   saveLastGrade();
-
-}
-
-function hideHighscore()
-{
-  highscore.style.display = "none";
-}
-
-function showHighscore()
-{
-  highscore.style.display = "block";
-}
-
-function hideQuizComplete()
-{
-  quizComplete.style.display = "none";
-}
-
-function showQuizComplete() {
-    quizComplete.style.display = "block";
-
-}
-
-function hideQuizBody() {
-
-  displayQuiz.style.display = "none";
-
-}
-
-function hideHeader() {
-  displayHeader.style.display = "none";
-}
-
-// The init function is called when the page loads 
-function init() {
-  // getWins();
-  // getlosses();
-}
-
-// The startGame function is called when the start button is clicked
-function startGame() {
-  isWin = false;
-  // Prevents start button from being clicked when round is in progress
-  startButton.disabled = true;
-
-  // once start button is pressed, startgame is called and game begins, 
-  // questions are rendered on screen
-  showQuiz();
-  renderMessage();
-  startTimer()
-
-}
 
 // The setTimer function starts and stops the timer 
 // This timer is displayed to the user when start button is pressed
@@ -182,14 +108,18 @@ function startTimer() {
   // Sets timer
   timer = setInterval(function () {
     timerCount--;
+
+    // displaying how much time the user has left in the test
     timerElement.textContent = timerCount;
 
-    // Tests if time has run out
+    // Tests if time has run out we want to terminate the quiz 
+    //  and stop the timer
     if (timerCount <= 0) {
       // Clears interval
+      quizOver();
       clearInterval(timer);
-    }
-
+    } 
+    // set in Nanoseconds
   }, 1000);
 }
 
@@ -199,35 +129,106 @@ function fastTimer() {
   quickTimer = setInterval(function () {
     quickTimerCtr--;
 
-    // if quickTimerCtr is greater than 10 then show result
+    // if quickTimerCtr is greater than 0 then show result
     showResult();
 
-
-    //  if quickTimer is less than or equal to 0 then hid the result 
+    //  if quickTimer is less than or equal to 0 then hide the result 
     if (quickTimerCtr <= 0) {
       // Clears interval
       hideResult();
       clearInterval(quickTimer);
     }
-
     // set in Nanoseconds
   }, 100);
 }
 
+
+function quizOver() {
+
+  // we want only show that user has finished the quiz so we need to hide the body and 
+  // header and display the section which has been hiden till this point where quizOver is called
+  hideQuizBody();
+  hideHeader();
+  showQuizComplete();
+  totalCrt.textContent = correctCtr;
+  quizLength.textContent = quizQuestions.length;
+  saveLastGrade();
+}
+
+// Many of these functions contain the same logic of either hidding or reveal
+// their associated HTML elements 
+
+function hideHighscore() {
+  highscore.style.display = "none";
+}
+
+function showHighscore() {
+  highscore.style.display = "block";
+}
+
+function hideQuizComplete() {
+  quizComplete.style.display = "none";
+}
+
+function showQuizComplete() {
+  quizComplete.style.display = "block";
+}
+
+function hideQuizBody() {
+  displayQuiz.style.display = "none";
+}
+
+function hideHeader() {
+  displayHeader.style.display = "none";
+}
+
+// More for demo: you can just agument the display through setting it 
+// Don't always have to declare a element
+function showQuiz() {
+  document.getElementById("visibleQuiz").style.display = "block";
+}
+
+function hideQuiz() {
+  document.getElementById("visibleQuiz").style.display = "none";
+}
+
+function showResult() {
+  answerResult.style.display = "inherit";
+}
+
+function hideResult() {
+  answerResult.style.display = "none";
+}
+
+// The init function is called when the page loads 
+// Hide sections which aren't needed but are visible on start 
+function init() {
+  hideQuiz();
+  hideQuizComplete();
+  hideHighscore();
+}
+
+// The startGame function is called when the start button is clicked
+function startGame() {
+  // Prevents start button from being clicked when round is in progress
+  startButton.disabled = true;
+
+  // once start button is pressed, startgame is called and game begins, 
+  // questions are rendered on screen
+  showQuiz();
+  renderMessage();
+  startTimer()
+}
+
 function setCorrectCtr() {
+  // Incriments the counter when called and updates the win's
+  // textContent to equal correctCtr
   correctCtr++;
   win.textContent = correctCtr;
 }
 
-function checkWin() {
-  // If the word equals the blankLetters array when converted to string, set isWin to true
-  if (chosenWord === blanksLetters.join("")) {
-    // This value is used in the timer function to test if win condition is met
-    isWin = true;
-  }
-}
-
 function setCounter() {
+  // incriments the questions answered, incorrect or correct 
   quesCtr++;
 }
 
@@ -256,50 +257,24 @@ function renderMessage() {
   }
 }
 
-// visible.style.display will inhereit the display characteristic from it's parent
-
-function showQuiz() {
-  document.getElementById("visibleQuiz").style.display = "block";
-}
-
-//  visible.style.display will hide everything within
-// <div class="card results" id="visible">
-
-function hideQuiz() {
-  document.getElementById("visibleQuiz").style.display = "none";
-}
-
-function showResult() {
-  answerResult.style.display = "inherit";
-}
-
-
-function hideResult() {
-  answerResult.style.display = "none";
-}
-
-
 function nextQuestion() {
+
+  // This script determines the quiz to terminate when the code reaches the last element within the 
+  // quizQuestions array of objects 
   setCounter();
 
   if (quesCtr == quizQuestions.length) 
-  {
     quizOver();
-    showQuizComplete();
-  }
 
-  
   else
     renderMessage();
 }
-
 
 function correctAnswer() {
   let quiz = quizQuestions[quesCtr];
   correct = quiz.correctAnswer;
   return correct;
 }
-
 
 function setRsltFail() {
   answerResult.textContent = "Sorry, that was incorrect";
@@ -309,12 +284,10 @@ function setRsltSuccess() {
   answerResult.textContent = "That is correct, Nice Job";
 }
 
-
 function checkAnswer(answer) {
   correct = quizQuestions[quesCtr].correctAnswer;
   answer = answer[0];
 
-  console.log(answer);
   if (answer === correct) {
     setCorrectCtr();
     setRsltSuccess();
@@ -340,6 +313,7 @@ function saveLastGrade() {
     grade: correctCtr,
 
   };
+  
   // Use .setItem() to store object in storage and JSON.stringify to convert it as a string
   localStorage.setItem('grade', JSON.stringify(grade));
 }
@@ -355,20 +329,12 @@ function renderLastGrade() {
   showHighscore();
 }
 
-function resetGame()
-{
+function resetGame() {
   location.reload();
 }
 
-
-
-
-
 // Calls init() so that it fires when page opened
 init();
-hideQuiz();
-hideQuizComplete();
-hideHighscore();
 
 // Attach event listener to start button to call startGame function on click
 startButton.addEventListener("click", startGame);
@@ -376,16 +342,12 @@ startButton.addEventListener("click", startGame);
 // Attaches event listener to button
 resetBtn.addEventListener("click", resetGame);
 
-
 saveButton.addEventListener('click', function (event) {
   event.preventDefault();
   saveLastGrade();
   hideQuizComplete();
   renderLastGrade();
 });
-
-
-
 
 // these click events will call a function which grabs the text occupying the button pressed by user
 // checkAnswer is called and given the  text grabbed by element = event.target;
