@@ -15,7 +15,8 @@ https://github.com/Dev-Attaway/Web-APIs-Code-Quiz
 
 ## Usage
 
-Intended as a demonstration of the developer's current skill with JS
+To be used as a model for quizzes that a developer may have to program. 
+It serves as a study tool for how JS can manipulate HTML elements.
 
 ## Credits
 
