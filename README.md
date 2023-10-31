@@ -26,8 +26,7 @@ Source code:
 
 
 The webpage can be viewed through this link:
-https://dev-attaway.github.io/password-generator/
-
+https://dev-attaway.github.io/Web-APIs-Code-Quiz/
 ## License
 
 Please refer to the LICENSE in the repo.
